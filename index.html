@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farhaz Kolathoor — Data Analytics Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Bungee&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F0E8;--tan:#E8DFC8;--rust:#C8441A;--rust2:#A03512;
+  --teal:#1A7A6E;--mustard:#D4A017;--navy:#1A2540;--navy2:#111828;
+  --charcoal:#2A2A2A;--ink:#1A1A1A;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--navy2);overflow-x:hidden}
+
+/* CURSOR — uses CSS custom cursor on body, overlaid dot+ring on top */
+body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='4' fill='%23C8441A'/%3E%3C/svg%3E") 4 4,auto}
+
+#cur-ring{
+  position:fixed;top:0;left:0;width:38px;height:38px;
+  border:2px solid var(--rust);border-radius:50%;
+  pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:width .18s,height .18s,border-color .18s,opacity .18s;
+  opacity:0;
+}
+#cur-ring.vis{opacity:1}
+#cur-ring.big{width:54px;height:54px;border-color:var(--mustard)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;background:var(--navy2);border-bottom:3px solid var(--rust);display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:60px}
+.nav-logo{font-family:'Bungee Inline',cursive;font-size:1.3rem;color:var(--cream);text-decoration:none;letter-spacing:.05em}
+.nav-logo span{color:var(--rust)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-family:'DM Mono',monospace;font-size:11px;color:var(--tan);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--mustard)}
+.nav-cta{padding:.4rem 1rem;background:var(--rust);color:var(--cream)!important}
+.nav-cta:hover{background:var(--rust2)!important}
+
+/* HERO */
+.hero{min-height:100vh;background:var(--navy2);display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 4rem;position:relative;overflow:hidden;border-bottom:4px solid var(--rust)}
+.hero-stripes{position:absolute;top:0;right:0;bottom:0;width:40%;opacity:.04;pointer-events:none;background:repeating-linear-gradient(-45deg,var(--cream) 0,var(--cream) 2px,transparent 2px,transparent 18px)}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;color:var(--mustard);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem;padding-top:5rem;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';width:30px;height:2px;background:var(--mustard);display:inline-block}
+.hero-name{font-family:'Bungee Inline',cursive;font-size:clamp(3rem,7vw,8rem);line-height:.92;color:var(--cream);margin-bottom:2rem}
+.hero-name span{color:var(--rust);display:block}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.hero-desc{max-width:480px;font-size:.95rem;color:var(--tan);line-height:1.85;font-weight:300}
+.hero-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;justify-content:flex-end}
+.htag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border:1.5px solid rgba(245,240,232,.2);color:var(--tan)}
+.hero-btns{display:flex;gap:1rem}
+.btn-rust{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.75rem;background:var(--rust);color:var(--cream);font-family:'DM Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border:2px solid var(--rust);transition:all .2s}
+.btn-rust:hover{background:transparent;color:var(--rust)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.75rem;background:transparent;color:var(--cream);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border:2px solid rgba(245,240,232,.3);transition:all .2s}
+.btn-outline:hover{border-color:var(--mustard);color:var(--mustard)}
+
+/* ABOUT */
+.about-section{background:var(--cream);padding:6rem 3rem;border-bottom:4px solid var(--teal)}
+.sec-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.5rem}
+.sec-title{font-family:'Bungee Inline',cursive;font-size:clamp(2.5rem,5vw,4rem);line-height:1;margin-bottom:3rem}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto;align-items:start}
+.about-tl{position:relative;padding-left:2rem}
+.about-tl::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--rust)}
+.tl-item{position:relative}
+.tl-dot{position:absolute;left:-2rem;top:1.5rem;width:14px;height:14px;border:2px solid var(--rust);background:var(--cream);transform:rotate(45deg);transition:background .2s;z-index:1}
+.tl-item.open .tl-dot{background:var(--rust)}
+.tl-trigger{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1.2rem 1rem;border-bottom:1px solid rgba(26,37,64,.1);transition:background .2s;user-select:none}
+.tl-trigger:hover{background:rgba(200,68,26,.05)}
+.tl-date{font-family:'DM Mono',monospace;font-size:9px;color:var(--rust);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.3rem}
+.tl-role{font-family:'Bungee',cursive;font-size:1rem;color:var(--ink);line-height:1.2}
+.tl-company{font-family:'DM Mono',monospace;font-size:9px;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem}
+.tl-arrow{font-size:10px;color:var(--rust);transition:transform .3s;padding-top:1.4rem;flex-shrink:0}
+.tl-item.open .tl-arrow{transform:rotate(180deg)}
+.tl-body{overflow:hidden;max-height:0;transition:max-height .4s ease,padding .3s;padding:0 1rem;border-bottom:1px solid rgba(26,37,64,.08)}
+.tl-item.open .tl-body{max-height:260px;padding:.85rem 1rem 1.2rem}
+.tl-desc{font-size:.83rem;color:var(--charcoal);line-height:1.85;font-weight:300;margin-bottom:.7rem}
+.tl-tags{display:flex;flex-wrap:wrap;gap:5px}
+.tl-tag{font-family:'DM Mono',monospace;font-size:9px;padding:2px 9px;border:1.5px solid rgba(26,37,64,.2);color:#555;letter-spacing:.06em}
+.about-sidebar{display:flex;flex-direction:column;gap:1px;background:rgba(26,37,64,.12);border:1.5px solid rgba(26,37,64,.15)}
+.aside-block{background:var(--cream);padding:1.25rem 1.5rem;transition:background .2s}
+.aside-block:hover{background:var(--tan)}
+.aside-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.6rem}
+.aside-val{font-size:.83rem;color:var(--charcoal);line-height:1.75;font-weight:300}
+.stag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:.5rem}
+.stag{font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border:1.5px solid rgba(26,37,64,.2);color:#555;letter-spacing:.07em}
+
+/* SKILLS */
+.skills-section{background:var(--navy);padding:6rem 3rem;border-bottom:4px solid var(--mustard)}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(245,240,232,.08);border:1.5px solid rgba(245,240,232,.08);max-width:1200px;margin:0 auto}
+.skill-col{background:var(--navy2);padding:2rem}
+.skill-col-head{font-family:'DM Mono',monospace;font-size:9px;color:var(--mustard);letter-spacing:.18em;text-transform:uppercase;padding-bottom:1rem;margin-bottom:1rem;border-bottom:1px solid rgba(245,240,232,.1)}
+.sk{display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid rgba(245,240,232,.04)}
+.sk:last-child{border-bottom:none}
+.sk-name{font-size:.87rem;color:var(--cream)}
+.sk-badge{font-family:'DM Mono',monospace;font-size:8px;padding:2px 8px;letter-spacing:.08em;text-transform:uppercase}
+.sk-core{background:rgba(200,68,26,.15);color:var(--rust);border:1.5px solid rgba(200,68,26,.35)}
+.sk-prof{background:rgba(245,240,232,.05);color:rgba(245,240,232,.45);border:1.5px solid rgba(245,240,232,.1)}
+
+/* PROJECTS */
+.projects-section{background:var(--tan);padding:6rem 3rem;border-bottom:4px solid var(--rust)}
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:rgba(26,37,64,.15);border:2px solid rgba(26,37,64,.15);max-width:1200px;margin:0 auto}
+.proj-card{background:var(--cream);position:relative;overflow:hidden;transition:background .2s;display:flex;flex-direction:column}
+.proj-card:hover{background:#FAFAF5}
+.proj-accent{position:absolute;top:0;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.proj-card:hover .proj-accent{transform:scaleX(1)}
+.proj-thumb{width:100%;aspect-ratio:16/9;overflow:hidden;border-bottom:2px solid rgba(26,37,64,.1);background:var(--navy2);position:relative}
+.proj-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s;display:block}
+.proj-card:hover .proj-thumb img{transform:scale(1.04)}
+.proj-thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Bungee Inline',cursive;font-size:1.1rem;color:rgba(245,240,232,.12);text-align:center;padding:1rem}
+.proj-body{padding:1.75rem;flex:1;display:flex;flex-direction:column}
+.proj-cat{font-family:'DM Mono',monospace;font-size:9px;color:var(--rust);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.badge{font-family:'DM Mono',monospace;font-size:8px;padding:2px 8px;letter-spacing:.1em;text-transform:uppercase}
+.b-live{background:rgba(26,122,110,.1);color:var(--teal);border:1.5px solid rgba(26,122,110,.25)}
+.b-done{background:rgba(26,37,64,.07);color:#555;border:1.5px solid rgba(26,37,64,.18)}
+.proj-title{font-family:'Bungee',cursive;font-size:1.05rem;color:var(--ink);margin-bottom:.7rem;line-height:1.2}
+.proj-desc{font-size:.82rem;color:var(--charcoal);line-height:1.85;margin-bottom:1.25rem;font-weight:300;flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1.25rem}
+.chip{font-family:'DM Mono',monospace;font-size:9px;padding:2px 9px;border:1.5px solid rgba(26,37,64,.2);color:#555;letter-spacing:.06em}
+.chip-r{border-color:rgba(200,68,26,.35);color:var(--rust)}
+.chip-t{border-color:rgba(26,122,110,.35);color:var(--teal)}
+.chip-m{border-color:rgba(212,160,23,.35);color:#886600}
+.proj-links{display:flex;gap:8px;flex-wrap:wrap}
+.plink{display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:.5rem .9rem;text-decoration:none;border:1.5px solid rgba(26,37,64,.25);color:var(--charcoal);transition:all .2s}
+.plink:hover{border-color:var(--rust);color:var(--rust)}
+.plink-live{background:var(--rust);color:var(--cream)!important;border-color:var(--rust)!important;font-weight:600}
+.plink-live:hover{background:var(--rust2)!important;border-color:var(--rust2)!important}
+
+/* CONTACT */
+.contact-section{background:var(--navy2);padding:6rem 3rem}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;max-width:1200px;margin:0 auto}
+.contact-head{font-family:'Bungee Inline',cursive;font-size:clamp(2.5rem,5vw,5rem);line-height:.95;color:var(--cream);margin-bottom:1.5rem}
+.contact-head em{color:var(--rust);font-style:normal;display:block}
+.contact-sub{font-size:.9rem;color:var(--tan);line-height:1.85;margin-bottom:2rem;max-width:380px;font-weight:300}
+.clinks{display:flex;flex-direction:column;gap:1px;background:rgba(245,240,232,.08);border:1.5px solid rgba(245,240,232,.08)}
+.clink{display:flex;align-items:center;gap:1.25rem;padding:1.1rem 1.25rem;background:var(--navy2);text-decoration:none;transition:background .2s}
+.clink:hover{background:var(--navy)}
+.clink-icon{width:34px;height:34px;border:1.5px solid rgba(200,68,26,.4);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--rust);flex-shrink:0}
+.clink-label{font-family:'DM Mono',monospace;font-size:9px;color:rgba(245,240,232,.35);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+.clink-val{font-size:.83rem;color:var(--cream)}
+.contact-form{background:var(--navy);border:1.5px solid rgba(245,240,232,.08);padding:2rem}
+.frow{margin-bottom:1.1rem}
+.flabel{display:block;font-family:'DM Mono',monospace;font-size:9px;color:var(--mustard);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.4rem}
+.finput{width:100%;background:var(--navy2);border:1.5px solid rgba(245,240,232,.12);color:var(--cream);font-family:'Inter',sans-serif;font-size:.87rem;font-weight:300;padding:.7rem .9rem;outline:none;transition:border-color .2s;border-radius:0;-webkit-appearance:none}
+.finput:focus{border-color:var(--rust)}
+.finput::placeholder{color:rgba(245,240,232,.25)}
+textarea.finput{resize:vertical;min-height:110px}
+.fsend{width:100%;padding:.85rem;background:var(--rust);color:var(--cream);font-family:'DM Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:none;transition:background .2s;margin-top:.5rem}
+.fsend:hover{background:var(--rust2)}
+
+footer{background:var(--ink);border-top:3px solid var(--rust);padding:1.5rem 3rem;display:flex;justify-content:space-between;align-items:center}
+.foot{font-family:'DM Mono',monospace;font-size:10px;color:rgba(245,240,232,.3);letter-spacing:.1em;text-transform:uppercase}
+.foot em{color:var(--rust);font-style:normal}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--navy2)}
+::-webkit-scrollbar-thumb{background:var(--rust)}
+
+@media(max-width:900px){
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+  .hero,.about-section,.skills-section,.projects-section,.contact-section{padding-left:1.5rem;padding-right:1.5rem}
+  .about-grid,.skills-grid,.projects-grid,.contact-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:.5rem;text-align:center;padding:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div id="cur-ring"></div>
+
+<nav>
+  <a href="#" class="nav-logo">FK<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-stripes"></div>
+  <div class="hero-eyebrow">Data Analytics &amp; Business Intelligence &mdash; Calgary, AB</div>
+  <div class="hero-name">Farhaz<span>Kolathoor</span></div>
+  <div class="hero-bottom">
+    <p class="hero-desc">Analytically driven, creatively minded. I bridge the gap between raw data and real decisions &mdash; blending international business experience across three countries with modern analytics, machine learning, and a designer&rsquo;s eye for communication.</p>
+    <div>
+      <div class="hero-tags">
+        <span class="htag">Python</span><span class="htag">Power BI</span><span class="htag">MS Fabric</span><span class="htag">SQL</span><span class="htag">Claude AI</span><span class="htag">Streamlit</span>
+      </div>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-rust">View Projects &rarr;</a>
+        <a href="#contact" class="btn-outline">Get In Touch</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="sec-label" style="color:var(--teal)">01 &mdash; About</div>
+    <h2 class="sec-title" style="color:var(--ink)">Who I Am</h2>
+    <div class="about-grid">
+      <div class="about-tl">
+
+        <div class="tl-item open">
+          <div class="tl-dot"></div>
+          <div class="tl-trigger">
+            <div><div class="tl-date">2025 &mdash; Present</div><div class="tl-role">Data Analytics</div><div class="tl-company">SAIT &mdash; Calgary, Canada</div></div>
+            <div class="tl-arrow">&#9660;</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Pursuing Data Analytics at SAIT, building real-world tools using Python, Power BI, Microsoft Fabric, and AI-powered Streamlit applications. Focused on trade analytics, anomaly detection, and business intelligence.</p>
+            <div class="tl-tags"><span class="tl-tag">Python</span><span class="tl-tag">Power BI</span><span class="tl-tag">MS Fabric</span><span class="tl-tag">Streamlit</span><span class="tl-tag">Claude AI</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-trigger">
+            <div><div class="tl-date">2024 &mdash; 2025</div><div class="tl-role">Supply Chain Management</div><div class="tl-company">SAIT &mdash; Calgary, Canada</div></div>
+            <div class="tl-arrow">&#9660;</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Completed a Supply Chain Management diploma, bridging hands-on industry experience with formal academic training in procurement, logistics, and operations.</p>
+            <div class="tl-tags"><span class="tl-tag">Procurement</span><span class="tl-tag">Logistics</span><span class="tl-tag">Operations</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-trigger">
+            <div><div class="tl-date">Mar 2022 &mdash; Aug 2024</div><div class="tl-role">Supply Chain &amp; Export Ops</div><div class="tl-company">Brown Lumber &mdash; Semarang, Indonesia</div></div>
+            <div class="tl-arrow">&#9660;</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Managed end-to-end supply chain for a raw timber export business across Southeast Asian markets. Watched data flow through every stage &mdash; from procurement through rotary, drying, grading, to container loads at port.</p>
+            <div class="tl-tags"><span class="tl-tag">Export-Import</span><span class="tl-tag">Vendor Coordination</span><span class="tl-tag">Logistics</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-trigger">
+            <div><div class="tl-date">Jul 2019 &mdash; Dec 2021</div><div class="tl-role">Sales &amp; Marketing Manager</div><div class="tl-company">Apollo Sindoori Hotels &mdash; Chennai, India</div></div>
+            <div class="tl-arrow">&#9660;</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Co-designed and launched Delivery by Sketch cloud kitchen from the ground up across 7 locations in Chennai. Managed supply chain, logistics, production, and creative design across multiple F&amp;B brands simultaneously.</p>
+            <div class="tl-tags"><span class="tl-tag">Brand Management</span><span class="tl-tag">Operations</span><span class="tl-tag">F&amp;B</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-trigger">
+            <div><div class="tl-date">Jun 2018 &mdash; Jul 2019</div><div class="tl-role">Business Development Manager</div><div class="tl-company">Zomato &mdash; Chennai, India</div></div>
+            <div class="tl-arrow">&#9660;</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Managed key restaurant partner accounts, acquired new clients, and exceeded sales targets &mdash; winning an internal sales competition. The delivery data here planted the seed for everything that followed.</p>
+            <div class="tl-tags"><span class="tl-tag">Business Development</span><span class="tl-tag">Client Management</span><span class="tl-tag">Sales</span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="about-sidebar">
+        <div class="aside-block">
+          <div class="aside-label">Currently</div>
+          <div class="aside-val">Pursuing Data Analytics @ SAIT, Calgary<br>Specializing in Microsoft Fabric, Power BI &amp; AI-powered development</div>
+        </div>
+        <div class="aside-block">
+          <div class="aside-label">Education</div>
+          <div class="aside-val">Data Analytics &mdash; SAIT (In Progress)<br>Supply Chain Management &mdash; SAIT<br>Bachelor of Commerce &mdash; Loyola College, Chennai</div>
+        </div>
+        <div class="aside-block">
+          <div class="aside-label">Experience Across</div>
+          <div class="stag-row">
+            <span class="stag">India</span><span class="stag">Indonesia</span><span class="stag">Canada</span><span class="stag">Hospitality</span><span class="stag">Export-Import</span><span class="stag">Supply Chain</span><span class="stag">Business Development</span><span class="stag">Marketing</span><span class="stag">Graphic Design</span>
+          </div>
+        </div>
+        <div class="aside-block">
+          <div class="aside-label">Design Tools</div>
+          <div class="aside-val">Photoshop &middot; Illustrator &middot; Procreate &middot; Canva</div>
+        </div>
+        <div class="aside-block">
+          <div class="aside-label">Beyond the Screen</div>
+          <div class="stag-row"><span class="stag">Fitness &amp; Calisthenics</span><span class="stag">Soccer</span><span class="stag">Hiking</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="sec-label" style="color:var(--mustard)">02 &mdash; Skills</div>
+    <h2 class="sec-title" style="color:var(--cream)">Tech Stack</h2>
+    <div class="skills-grid">
+      <div class="skill-col">
+        <div class="skill-col-head">Analytics &amp; Data Science</div>
+        <div class="sk"><span class="sk-name">Python</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">SQL</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Pandas &amp; NumPy</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Matplotlib &amp; Seaborn</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Scikit-learn</span><span class="sk-badge sk-prof">Proficient</span></div>
+        <div class="sk"><span class="sk-name">Statistical Analysis</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Excel &amp; Data Toolpak</span><span class="sk-badge sk-core">Core</span></div>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-head">BI, Cloud &amp; Engineering</div>
+        <div class="sk"><span class="sk-name">Power BI</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Microsoft Fabric</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Dataflow Gen2 / PySpark</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Azure Blob Storage</span><span class="sk-badge sk-prof">Proficient</span></div>
+        <div class="sk"><span class="sk-name">Azure CosmosDB</span><span class="sk-badge sk-prof">Proficient</span></div>
+        <div class="sk"><span class="sk-name">Azure ML</span><span class="sk-badge sk-prof">Proficient</span></div>
+        <div class="sk"><span class="sk-name">Tableau</span><span class="sk-badge sk-prof">Proficient</span></div>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-head">AI, Dev &amp; Creative</div>
+        <div class="sk"><span class="sk-name">Streamlit</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Claude AI (Anthropic)</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Tavily Web Search</span><span class="sk-badge sk-prof">Proficient</span></div>
+        <div class="sk"><span class="sk-name">Adobe Photoshop</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Adobe Illustrator</span><span class="sk-badge sk-core">Core</span></div>
+        <div class="sk"><span class="sk-name">Procreate &amp; Canva</span><span class="sk-badge sk-core">Core</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="sec-label" style="color:var(--rust)">03 &mdash; Projects</div>
+    <h2 class="sec-title" style="color:var(--ink)">Featured Work</h2>
+    <div class="projects-grid">
+
+      <div class="proj-card">
+        <div class="proj-accent"></div>
+        <div class="proj-thumb">
+          <img src="https://raw.githubusercontent.com/frz08/Canadian-Trade-Anomaly-Intelligence/main/preview.png" alt="Canadian Trade Anomaly Intelligence" onerror="this.style.display='none';this.parentNode.innerHTML='<div class=proj-thumb-ph>CANADIAN TRADE ANOMALY INTELLIGENCE</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-cat">AI Agent &middot; Anomaly Detection <span class="badge b-live">Live</span></div>
+          <div class="proj-title">Canadian Trade Anomaly Intelligence</div>
+          <div class="proj-desc">AI-powered Streamlit app detecting anomalies in Canadian trade data (1990&ndash;2026) at the HS Code Chapter level. Deploys Claude Sonnet + Tavily to explain each anomaly in real time.</div>
+          <div class="chips"><span class="chip chip-r">Python</span><span class="chip chip-r">Streamlit</span><span class="chip chip-m">Claude Sonnet</span><span class="chip chip-m">Tavily</span><span class="chip chip-r">Pandas</span></div>
+          <div class="proj-links">
+            <a href="https://github.com/frz08/Canadian-Trade-Anomaly-Intelligence" target="_blank" class="plink">GitHub</a>
+            <a href="https://canadian-trade-anomaly-intelligence-prkppxmvlx92es5pxgdr3w.streamlit.app/" target="_blank" class="plink plink-live">&#8599; Live App</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-accent"></div>
+        <div class="proj-thumb">
+          <img src="https://raw.githubusercontent.com/frz08/Canadian-Merchandise-Trade-Dashboard-by-NAPCS/main/preview.png" alt="Trade Dashboard" onerror="this.style.display='none';this.parentNode.innerHTML='<div class=proj-thumb-ph>CANADIAN MERCHANDISE TRADE DASHBOARD</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-cat">Microsoft Fabric &middot; Power BI <span class="badge b-live">Live</span></div>
+          <div class="proj-title">Canadian Merchandise Trade Dashboard by NAPCS</div>
+          <div class="proj-desc">Full ETL pipeline on Microsoft Fabric &mdash; Lakehouse ingestion, PySpark validation, Dataflow Gen2 transformation, Semantic Model deployment, and interactive Power BI reporting.</div>
+          <div class="chips"><span class="chip chip-t">MS Fabric</span><span class="chip chip-t">Power BI</span><span class="chip chip-t">PySpark</span><span class="chip chip-t">DAX</span><span class="chip chip-t">Power Query</span></div>
+          <div class="proj-links">
+            <a href="https://github.com/frz08/Canadian-Merchandise-Trade-Dashboard-by-NAPCS" target="_blank" class="plink">GitHub</a>
+            <a href="https://app.powerbi.com/view?r=eyJrIjoiYzM1ZThiNDMtODgxMC00MjQ0LThlNzMtYjAyNjdlOWFmZGEyIiwidCI6ImY1MmYyMTgzLTlmNjctNGFkMi1iNjU2LTZmNzU0ZmUxOTZjYiIsImMiOjZ9" target="_blank" class="plink plink-live">&#8599; Live Report</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-accent"></div>
+        <div class="proj-thumb">
+          <img src="https://raw.githubusercontent.com/frz08/Calgary-Urban-Equity-and-Socioeconomic-Indicators/main/preview.png" alt="Calgary Urban Equity" onerror="this.style.display='none';this.parentNode.innerHTML='<div class=proj-thumb-ph>CALGARY URBAN EQUITY &amp; SOCIOECONOMIC INDICATORS</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-cat">Statistical Analysis &middot; Urban Analytics <span class="badge b-done">Completed</span></div>
+          <div class="proj-title">Calgary Urban Equity &amp; Socioeconomic Indicator Analysis</div>
+          <div class="proj-desc">Analysis of Calgary&rsquo;s Equity Index using the WHO Urban HEART framework &mdash; examining working poverty, transit access, and employment disparities across all four city quadrants.</div>
+          <div class="chips"><span class="chip chip-r">Python</span><span class="chip chip-r">Correlation</span><span class="chip chip-r">Regression</span><span class="chip chip-r">Matplotlib</span></div>
+          <div class="proj-links">
+            <a href="https://github.com/frz08/Calgary-Urban-Equity-and-Socioeconomic-Indicators" target="_blank" class="plink">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-accent"></div>
+        <div class="proj-thumb">
+          <img src="https://raw.githubusercontent.com/frz08/Walmart-Retail-Analysis/main/preview.png" alt="Walmart Retail Analysis" onerror="this.style.display='none';this.parentNode.innerHTML='<div class=proj-thumb-ph>WALMART RETAIL ANALYSIS</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-cat">Retail Analytics &middot; Statistical Analysis <span class="badge b-done">Completed</span></div>
+          <div class="proj-title">Walmart Retail Dataset Analysis</div>
+          <div class="proj-desc">End-to-end retail analytics &mdash; SQL cleaning, EDA via Excel Pivot Tables, regression modeling with the Data Analysis Toolpak, and Z-score competitor benchmarking across 45 stores.</div>
+          <div class="chips"><span class="chip chip-t">SQL</span><span class="chip chip-t">Excel</span><span class="chip chip-t">Regression</span><span class="chip chip-t">Z-Score</span></div>
+          <div class="proj-links">
+            <a href="https://github.com/frz08/Walmart-Retail-Analysis" target="_blank" class="plink">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-accent"></div>
+        <div class="proj-thumb">
+          <img src="https://raw.githubusercontent.com/frz08/Global-Economy-Indicators/main/preview.png" alt="Global Economy Indicators" onerror="this.style.display='none';this.parentNode.innerHTML='<div class=proj-thumb-ph>GLOBAL ECONOMY INDICATORS</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-cat">Statistical Analysis &middot; Visualization <span class="badge b-done">Completed</span></div>
+          <div class="proj-title">Global Economy Indicators Analysis</div>
+          <div class="proj-desc">Multi-decade analysis of 200+ countries (1970&ndash;2021) exploring GDP, GNI, exports, and capital formation &mdash; using log-log transformation, elasticity scaling, and multiple regression models.</div>
+          <div class="chips"><span class="chip chip-r">Python</span><span class="chip chip-r">Pandas</span><span class="chip chip-r">Seaborn</span><span class="chip chip-r">Regression</span></div>
+          <div class="proj-links">
+            <a href="https://github.com/frz08/Global-Economy-Indicators" target="_blank" class="plink">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="sec-label" style="color:var(--rust)">04 &mdash; Contact</div>
+      <div class="contact-head">Let&rsquo;s build<br>something <em>great.</em></div>
+      <p class="contact-sub">Open to data analytics roles, BI engineering positions, freelance projects, and interesting collaborations. Based in Calgary &mdash; open to remote.</p>
+      <div class="clinks">
+        <a href="mailto:farhazahammed97@gmail.com" class="clink">
+          <div class="clink-icon">@</div>
+          <div><div class="clink-label">Email</div><div class="clink-val">farhazahammed97@gmail.com</div></div>
+        </a>
+        <a href="https://www.linkedin.com/in/farhaz-kolathoor-405145179/" target="_blank" class="clink">
+          <div class="clink-icon">in</div>
+          <div><div class="clink-label">LinkedIn</div><div class="clink-val">Farhaz Kolathoor</div></div>
+        </a>
+        <a href="https://github.com/frz08" target="_blank" class="clink">
+          <div class="clink-icon">&lt;/&gt;</div>
+          <div><div class="clink-label">GitHub</div><div class="clink-val">github.com/frz08</div></div>
+        </a>
+        <a href="https://canadian-trade-anomaly-intelligence-prkppxmvlx92es5pxgdr3w.streamlit.app/" target="_blank" class="clink">
+          <div class="clink-icon">&#9654;</div>
+          <div><div class="clink-label">Live App</div><div class="clink-val">Trade Anomaly Detector</div></div>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="frow"><label class="flabel">Your Name</label><input type="text" class="finput" placeholder="Jane Smith" id="fn"></div>
+      <div class="frow"><label class="flabel">Email Address</label><input type="email" class="finput" placeholder="jane@company.com" id="fe"></div>
+      <div class="frow"><label class="flabel">Subject</label><input type="text" class="finput" placeholder="Job opportunity / Collaboration / Project" id="fs"></div>
+      <div class="frow"><label class="flabel">Message</label><textarea class="finput" placeholder="Tell me about the opportunity..." id="fm"></textarea></div>
+      <button class="fsend" id="fsend">Send Message &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">Farhaz Kolathoor <em>&copy; 2025</em></div>
+  <div class="foot">Built &amp; deployed on <em>GitHub Pages</em></div>
+</footer>
+
+<script>
+(function(){
+  var ring = document.getElementById('cur-ring');
+  var rx = -100, ry = -100, mx = -100, my = -100;
+
+  document.addEventListener('mousemove', function(e){
+    mx = e.clientX;
+    my = e.clientY;
+    ring.classList.add('vis');
+  });
+
+  document.addEventListener('mouseleave', function(){
+    ring.classList.remove('vis');
+  });
+
+  (function loop(){
+    rx += (mx - rx) * 0.13;
+    ry += (my - ry) * 0.13;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(loop);
+  })();
+
+  document.querySelectorAll('a,button,.tl-trigger,.proj-card,.aside-block,.clink').forEach(function(el){
+    el.addEventListener('mouseenter', function(){ ring.classList.add('big'); });
+    el.addEventListener('mouseleave', function(){ ring.classList.remove('big'); });
+  });
+
+  document.querySelectorAll('.tl-trigger').forEach(function(t){
+    t.addEventListener('click', function(){ t.parentElement.classList.toggle('open'); });
+  });
+
+  document.getElementById('fsend').addEventListener('click', function(){
+    var n=document.getElementById('fn').value,
+        e=document.getElementById('fe').value,
+        s=document.getElementById('fs').value,
+        m=document.getElementById('fm').value;
+    if(!e||!m){alert('Please fill in your email and message.');return;}
+    window.location.href='mailto:farhazahammed97@gmail.com?subject='+encodeURIComponent(s||'Portfolio Enquiry')+'&body='+encodeURIComponent('From: '+n+'\nEmail: '+e+'\n\n'+m);
+  });
+
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.style.opacity='1';
+        entry.target.style.transform='translateY(0)';
+      }
+    });
+  },{threshold:0.07});
+
+  document.querySelectorAll('.proj-card,.skill-col,.aside-block,.clink,.tl-item').forEach(function(el){
+    el.style.opacity='0';
+    el.style.transform='translateY(20px)';
+    el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+    obs.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
